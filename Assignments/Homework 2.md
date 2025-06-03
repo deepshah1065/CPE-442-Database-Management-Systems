@@ -114,3 +114,40 @@ ORDER BY Customer, Product, State
 ## **<ins> Query 4 </ins>**
 ### For each product, find the median sales quantity (assume an odd number of sales for simplicity of presentation). (NOTE – “median” is defined as “denoting or relating to a value or quantity lying at the midpoint of a frequency distribution of observed values or quantities, such that there is an equal probability of falling above or below it.” E.g., Median value of the list {13, 23, 12, 16, 15, 9, 29} is 15.
 ## **<ins> Code </ins>**
+```sql 
+With base_table as 
+(
+	SELECT distinct prod, quant
+	FROM sales
+),
+
+q1 as 
+(
+	SELECT s1.prod Product, s1.quant Quant, count(s1.quant) as pos
+	FROM base_table s1 JOIN sales s2
+	ON s1.prod = s2.prod AND s2.quant <= s1.quant 
+	GROUP BY s1.prod, s1.quant
+),
+q2 AS (
+	SELECT prod as Product, ceiling(count(quant)/2) as median_pos
+	FROM sales
+	GROUP BY Product
+),
+q3 AS 
+(
+SELECT q1.Product Product, q1.Quant, q1.Pos, q2.Median_Pos
+FROM q1 JOIN q2 
+ON q1.Product = q2.Product 
+WHERE q1.pos >= q2.median_pos
+),
+q4 AS 
+(
+SELECT q3.Product product, min(pos) as Median_Quant
+FROM q3
+GROUP BY Product
+)
+SELECT q4.product, q1.Quant Median_Quant
+FROM q1, q4
+WHERE q1.Product = q4.Product and q1.Pos = q4.Median_Quant
+ORDER BY Product
+```

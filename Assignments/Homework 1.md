@@ -3,8 +3,7 @@
 ### In this assignment, you will express “complex” OLAP queries in SQL. The key point of the exercise is to observe the complexity of expressing the type of such queries despite the relatively simple ideas of the queries themselves. Your mission (in addition to writing the SQL queries) is to consider the reasons for the complexity of the expression of these queries.
 
 ## **<ins> Query 1 </ins>**
-### **<ins> Question 1 </ins>**
-#### For each customer, compute the minimum and maximum sales quantities along with the corresponding products (purchased), dates (i.e., dates of those minimum and maximum sales quantities) and the states in which the sale transactions took place. If there are >1 occurrences of the min or max, display all. For the same customer, compute the average sales quantity.
+#### 1. For each customer, compute the minimum and maximum sales quantities along with the corresponding products (purchased), dates (i.e., dates of those minimum and maximum sales quantities) and the states in which the sale transactions took place. If there are >1 occurrences of the min or max, display all. For the same customer, compute the average sales quantity.
 ### **Code**
 ```sql 
 WITH q1 AS (
@@ -28,5 +27,7 @@ q3 AS (
 	FROM q1, q2, q3
 	WHERE q1.cust = q2.Customer_Name AND q2.Customer_Name = q3.Customer_Name
 	ORDER BY cust
+
+
 
 

@@ -1,4 +1,5 @@
-# **<ins> Programming Assignment 1 </ins>**
+# <p align ="center">
+**<ins> Programming Assignment 1 </ins> </p>**
 ## **<ins> Objective </ins>**
 ### In this assignment, you will express “complex” OLAP queries in SQL. The key point of the exercise is to observe the complexity of expressing the type of such queries despite the relatively simple ideas of the queries themselves. Your mission (in addition to writing the SQL queries) is to consider the reasons for the complexity of the expression of these queries.
 

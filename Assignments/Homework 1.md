@@ -142,53 +142,6 @@ q5 AS (
 	q4.cust = q5.cust AND q4.prod = q5.prod
 	ORDER BY customer
 ```
-## **<ins> Query 4 </ins>**
-### For each year and month combination, find the “busiest” and the “slowest” day (those days with the most and the least total sales quantities of products sold) and the corresponding total sales quantities (i.e., SUMs).
-## **<ins> Code </ins>**
-```sql
-/* SPRING */
-WITH q1 as (
-	SELECT cust, prod, avg(quant) spring_avg
-	FROM sales
-	WHERE month in (3,4,5)
-	GROUP BY cust, prod
-),
-
-/* SUMMER */
-q2 as (
-	SELECT cust, prod, avg(quant) summer_avg
-	FROM sales
-	WHERE month in (6,7,8)
-	GROUP BY cust, prod	
-),
-
-/* FALL */
-q3 AS (
-	SELECT cust, prod, avg(quant) fall_avg
-	FROM sales
-	WHERE month in (9,10,11)
-	GROUP BY cust, prod	
-),
-/* WINTER */
-q4 AS (
-	SELECT cust, prod, avg(quant) winter_avg
-	FROM sales
-	WHERE month in (12,1,2)
-	GROUP BY cust, prod	
-),
-q5 AS (
-	SELECT cust, prod, avg(quant) average_quantity, sum(quant) sum_quantity, count(quant) count_quantity
-	FROM sales
-	GROUP BY cust, prod	
-)
-	SELECT q1.cust as customer, q1.prod as product, q1.spring_avg, q2.summer_avg, q3.fall_avg, q4.winter_avg, q5.average_quantity average, q5.sum_quantity total, q5.count_quantity count
-	FROM q1, q2, q3, q4, q5
-	WHERE q1.cust = q2.cust AND q1.prod = q2.prod AND 
-	q2.cust = q3.cust AND q2.prod = q3.prod AND
-	q3.cust = q4.cust AND q3.prod = q4.prod AND
-	q4.cust = q5.cust AND q4.prod = q5.prod
-	ORDER BY customer
-```
 
 ## **<ins> Query 5 </ins>**
 ### For each product, output the maximum sales quantities for each quarter in 4 separate columns. Like the first report, display the corresponding dates (i.e., dates of those corresponding maximum sales quantities). Ignore the YEAR component of the dates (i.e., 10/25/2016 is considered the same date as 10/25/2017, etc.). 

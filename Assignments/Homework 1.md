@@ -27,4 +27,6 @@ q3 AS (
 	q1.avg_quant Avg_Q
 	FROM q1, q2, q3
 	WHERE q1.cust = q2.Customer_Name AND q2.Customer_Name = q3.Customer_Name
-	ORDER BY cust ```
+	ORDER BY cust
+
+

@@ -4,7 +4,7 @@
 
 ## **<ins> Query 1 </ins>**
 ### For each customer, compute the minimum and maximum sales quantities along with the corresponding products (purchased), dates (i.e., dates of those minimum and maximum sales quantities) and the states in which the sale transactions took place. If there are >1 occurrences of the min or max, display all. For the same customer, compute the average sales quantity.
-## **Code**
+## **<ins> Code </ins>**
 ```sql 
 WITH q1 AS (
 	SELECT cust, min(quant) min_quant, max(quant) max_quant, avg(quant) avg_quant

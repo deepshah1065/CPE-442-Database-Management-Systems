@@ -6,6 +6,43 @@
 ### For each product and month, count the number of sales transactions that were between the previous and the following month's average sales quantities. For January and December, you can display <NULL> or 0; alternatively, you can skip those months (those that do not have averages for the previous and/or following months).
 ## **<ins> Code </ins>**
 
+```sql 
+WITH q1 AS
+(
+SELECT month, prod AS product, avg(quant) as avg_quant
+FROM sales s
+GROUP BY month, prod 
+),
+
+prev_avg AS (
+select m1.month, m1.product Products, m2.avg_quant AS prev_avg, m2.month before_month
+from q1 m1 left join q1 m2
+on m1.product = m2.product and m1.month - 1 = m2.month
+),
+next_avg AS (
+select m1.month, m1.product Product, m2.avg_quant AS next_avg, m2.month before_month
+from q1 m1 left join q1 m2
+on m1.product = m2.product and m1.month + 1 = m2.month
+),
+
+reference AS 
+(
+select p.month, p.Products, p.prev_avg, n.next_avg
+from prev_avg p, next_avg n
+WHERE p.Products = n.Product and p.month = n.month
+)
+
+select r.products, r.month, Count(quant) AS Sales_Count_Between_Avgs
+FROM sales s, reference r
+WHERE s.prod = r.products AND s.month = r.month
+AND (s.quant between r.prev_avg and r.next_avg 
+OR  s.quant between r.next_avg and r.prev_avg)
+GROUP BY r.products, r.month, r.prev_avg, r.next_avg
+
+order by r.products, month
+```
+
+
 
 ## **<ins> Query 2 </ins>**
 ### For customer and product, show the average sales before, during and after eachquarter (e.g., for Q2, show average sales of Q1 and Q3. For “before” Q1 and “after” Q4, display <NULL>. The “YEAR” attribute is not considered for this query – for example, both Q1 of 2007 and Q1 of 2008 are considered Q1 regardless of the year.

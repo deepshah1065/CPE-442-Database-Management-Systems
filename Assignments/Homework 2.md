@@ -81,6 +81,34 @@ ORDER by q3.Customer, q3.product, q3.qtr
 ## **<ins> Query 3 </ins>**
 ### For each customer, product and state combination, compute (1) the product’s average sale of this customer for the state (i.e., the simple AVG for the group-by attributes – this is the easy part), (2) the average sale of the product and the state but for all of the other customers and (3) the customer’s average sale for the given state, but for all of the other products.
 ## **<ins> Code </ins>**
+```sql 
+WITH q1 AS
+(
+SELECT cust customer, prod AS Product, state as st, avg(quant) as prod_avg
+FROM sales s
+GROUP BY cust, prod, state
+),
+q2 AS 
+(
+SELECT q1.customer, q1.st, q1.Product, avg(s.quant) as other_prod_avg
+FROM q1, sales s
+WHERE q1.customer = s.cust and q1.st = s.state AND q1.Product != s.prod
+GROUP BY q1.customer, q1.Product, q1.st 
+),
+q3 AS (
+SELECT q1.customer, q1.st, q1.Product, avg(s.quant) as other_cust_avg
+FROM q1, sales s
+WHERE q1.customer != s.cust and q1.st = s.state AND q1.Product = s.prod
+GROUP BY q1.customer, q1.Product, q1.st
+)
+SELECT q1.customer Customer, q1.Product, q1.st State, q1.prod_avg Prod_Avg, q3.other_cust_avg Other_Cust_Avg, q2.other_prod_avg Other_Prod_Avg
+FROM q1, q2, q3
+WHERE q1.customer = q2.customer AND q1.Product = q2.Product AND q1.st = q2.st
+AND q2.customer = q3.customer AND q2.Product = q3.Product AND q2.st = q3.st
+AND q3.customer = q1.customer AND q3.Product = q1.Product AND q3.st = q1.st
+
+ORDER BY Customer, Product, State
+```
 
 
 ## **<ins> Query 4 </ins>**

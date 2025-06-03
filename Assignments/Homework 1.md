@@ -1,4 +1,4 @@
-# **<ins>Lab 1 — GHDL and GTKWave</ins>**
+# **<ins> Programming Assignment 1 </ins>**
 ## **<ins>Half Adder</ins>**
 ### **Code**
 ![Code](HalfAdderCode.png)

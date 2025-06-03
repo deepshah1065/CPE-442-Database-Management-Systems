@@ -25,7 +25,7 @@ q3 AS (
 	q1.avg_quant Avg_Q
 	FROM q1, q2, q3
 	WHERE q1.cust = q2.Customer_Name AND q2.Customer_Name = q3.Customer_Name
-	ORDER BY cust;
+	ORDER BY cust
 ```
 ## **<ins> Query 2 </ins>**
 ### For each year and month combination, find the “busiest” and the “slowest” day (those days with the most and the least total sales quantities of products sold) and the corresponding total sales quantities (i.e., SUMs).
